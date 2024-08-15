@@ -1,2 +1,5 @@
-# GoogleDinosaur
-Google Dinosaur Game Clone / Beginner Unity C# Game Development
+# Google Dinosaur Clone for Unity
+## Overview:
+ - ...
+## Donwload:
+ - ...
