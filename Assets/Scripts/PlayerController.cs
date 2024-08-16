@@ -1,4 +1,3 @@
-using CombatSystem.Core;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,24 +5,66 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] KeyCode jumpKey;
     [SerializeField] float jumpForce = 3;
-    [SerializeField] UnityEvent onDead;
-    ForceReceiver forceReceiver;
+    [SerializeField] float gravityMultiplier = 2;
+    [SerializeField] UnityEvent onDie;
+    CharacterController controller;
+    Animator animator;
+    float verticalVelocity = 0;
 
     public void Kill()
     {
-        onDead?.Invoke();
+        onDie?.Invoke();
     }
 
     void Awake()
     {
-        forceReceiver = GetComponent<ForceReceiver>();
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        ApplyGravity();
+
         if(Input.GetKey(jumpKey))
         {
-            forceReceiver.Jump(jumpForce);
+            Jump();
         }
+
+        if(controller.isGrounded)
+        {
+            Land();
+        }
+    }
+
+    void ApplyGravity()
+    {
+        if(controller.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = Physics.gravity.y * gravityMultiplier * Time.deltaTime;
+        }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * gravityMultiplier * Time.deltaTime;
+        }
+
+        controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+    }
+
+    void Jump()
+    {
+        if(controller.isGrounded)
+        {
+            verticalVelocity += jumpForce;
+        }
+
+        animator.SetTrigger("onJump");
+        animator.ResetTrigger("onLand");
+    }
+
+    void Land()
+    {
+        animator.SetTrigger("onLand");
+        animator.ResetTrigger("onJump");
     }
 }
