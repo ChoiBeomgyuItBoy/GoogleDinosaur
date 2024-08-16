@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] Obstacle[] obstacles;
+    [SerializeField] ObstacleConfig[] obstaclesConfig;
     [SerializeField] float minSpawnDelay = 1;
     [SerializeField] float maxSpawnDelay = 5;
     float timeSinceSpawned = Mathf.Infinity;
     float spawnDelay = 0;
+
+    [System.Serializable]
+    struct ObstacleConfig
+    {
+        public Obstacle obstacle;
+        public float heightOffset;
+    }
 
     void Update()
     {
@@ -18,11 +25,13 @@ public class ObstacleSpawner : MonoBehaviour
 
             spawnDelay = Random.Range(minSpawnDelay, maxSpawnDelay);
 
-            print(spawnDelay);
+            int randomIndex = Random.Range(0, obstaclesConfig.Length);
 
-            int randomIndex = Random.Range(0, obstacles.Length);
+            Obstacle obstacle = obstaclesConfig[randomIndex].obstacle;
 
-            Instantiate(obstacles[randomIndex], transform.position, Quaternion.identity);
+            float heightOffset = obstaclesConfig[randomIndex].heightOffset;
+
+            Instantiate(obstacle, transform.position + Vector3.up * heightOffset, Quaternion.identity);
         }
     }
 }

@@ -13,7 +13,6 @@ public class GameOverUI : MonoBehaviour
 
     void OnDisable()
     {
-        print("Disabled");
         Time.timeScale = 1;
     }
 
