@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameOverUI : MonoBehaviour
 {
     [SerializeField] Button restartButton;
+    [SerializeField] Scorer scorer;
 
     void OnEnable()
     {
@@ -23,6 +24,8 @@ public class GameOverUI : MonoBehaviour
 
     void Restart()
     {
+        scorer.SaveHighScore();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
