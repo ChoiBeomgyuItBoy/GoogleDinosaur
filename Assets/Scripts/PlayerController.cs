@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] KeyCode jumpKey;
     [SerializeField] float jumpForce = 3;
     [SerializeField] float gravityMultiplier = 2;
+    [SerializeField] UnityEvent onJump;
     [SerializeField] UnityEvent onDie;
     CharacterController controller;
     Animator animator;
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         if(controller.isGrounded)
         {
+            onJump?.Invoke();
             verticalVelocity += jumpForce;
         }
 
